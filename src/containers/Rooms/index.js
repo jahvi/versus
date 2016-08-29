@@ -19,17 +19,22 @@ class Rooms extends Component {
 
   componentWillMount() {
     this.activeRooms.on('value', (snapshot) => {
-      let rooms = [];
+      // If user is part of active rooms loop through them
+      if (snapshot.val() !== null) {
+        let rooms = [];
 
-      Object.keys(snapshot.val()).forEach((key, index) => {
-        rooms.push({
-          id: key,
-          name: snapshot.val()[key].name,
-          param: snapshot.val()[key].param
+        Object.keys(snapshot.val()).forEach((key, index) => {
+          rooms.push({
+            id: key,
+            name: snapshot.val()[key].name,
+            param: snapshot.val()[key].param
+          });
         });
-      });
 
-      this.setState({ rooms });
+        this.setState({ rooms });
+      } else {
+        this.setState({ rooms: [] });
+      }
     })
   }
 
