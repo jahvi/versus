@@ -4,26 +4,42 @@ import Button from '../../components/Button';
 import { firebaseAuth, firebaseDatabase } from '../../utils/firebase';
 
 function CreateRoom({ children }) {
+  /**
+   * Setup new room data
+   *
+   * @param  {string} roomName Room name
+   * @param  {string} userId   First user ID
+   */
+  const setupRoom = (roomName, userId) => {
+    const newUser = {};
+    newUser[userId] = 0;
+
+    const roomData = {
+      name: roomName,
+      param: paramCase(roomName)
+    };
+
+    // Create new room
+    const roomId = firebaseDatabase.ref('rooms')
+      .push({...roomData, users: [newUser]})
+      .key;
+
+    // Assign user to new room
+    firebaseDatabase.ref(`users/${userId}/rooms/${roomId}`)
+      .set(roomData);
+  };
+
+  /**
+   * Create room
+   *
+   * @return {void}
+   */
   const createRoom = () => {
     const roomName = prompt('Room name');
 
     if (roomName) {
       const userId = firebaseAuth.currentUser.uid;
-
-      const roomId = firebaseDatabase
-        .ref(`users/${userId}/rooms`)
-        .push({
-          name: roomName,
-          param: paramCase(roomName)
-        })
-        .key;
-
-      const newUser = {};
-      newUser[userId] = 0;
-
-      firebaseDatabase
-        .ref(`rooms/${roomId}/users`)
-        .set(newUser);
+      setupRoom(roomName, userId);
     }
   };
 
