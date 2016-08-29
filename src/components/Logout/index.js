@@ -8,9 +8,7 @@ function Logout({ children }) {
   };
 
   return (
-    <div>
-      <Button onClick={logout}>{children}</Button>
-    </div>
+    <Button onClick={logout}>{children}</Button>
   );
 }
 
