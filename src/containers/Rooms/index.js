@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import List from '../../components/List';
 import Logout from '../../components/Logout';
 import CreateRoom from '../../components/CreateRoom';
@@ -23,7 +24,8 @@ class Rooms extends Component {
       Object.keys(snapshot.val()).forEach((key, index) => {
         rooms.push({
           id: key,
-          name: snapshot.val()[key]
+          name: snapshot.val()[key].name,
+          param: snapshot.val()[key].param
         });
       });
 
@@ -43,8 +45,12 @@ class Rooms extends Component {
         {rooms.length > 0 ? (
           <List>
             {rooms.map((room) => {
+              const roomUrl = `/rooms/${room.param}`;
+
               return (
-                <li key={room.id}>{room.name}</li>
+                <li key={room.id}>
+                  <Link to={roomUrl}>{room.name}</Link>
+                </li>
               );
             })}
           </List>
