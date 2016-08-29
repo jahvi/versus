@@ -1,9 +1,10 @@
 import React from 'react';
+import FacebookLogin from '../../components/FacebookLogin';
 
 function Login() {
   return (
     <div>
-      Login Wrapper
+      <FacebookLogin>Login with Facebook</FacebookLogin>
     </div>
   );
 }
